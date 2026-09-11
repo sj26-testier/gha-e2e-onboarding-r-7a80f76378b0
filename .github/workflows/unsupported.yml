@@ -1,0 +1,25 @@
+name: Unsupported types
+on: {deployment: {types: [created]}, deployment_status: {types: [success]}}
+permissions: {}
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    outputs:
+      evidence_hash: ${{ steps.probe.outputs.evidence_hash }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/observe
+        env:
+          OBSERVATION_KIND: action-process
+      - id: probe
+        env:
+          CTX_SHA: ${{ github.sha }}
+          CTX_REF: ${{ github.ref }}
+          CTX_REF_NAME: ${{ github.ref_name }}
+          CTX_REF_TYPE: ${{ github.ref_type }}
+          CTX_EVENT_NAME: ${{ github.event_name }}
+          CTX_WORKFLOW: ${{ github.workflow }}
+          CTX_WORKFLOW_REF: ${{ github.workflow_ref }}
+          CTX_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          WORKFLOW_MARKER: must-not-run
+        run: python3 deployment-probe.py
