@@ -1,0 +1,1 @@
+const fs = require('node:fs'); const keys = ['sha','ref','ref_name','ref_type','event_name']; const value = Object.fromEntries(keys.map(k => [k, process.env['GITHUB_' + k.toUpperCase()] ?? ''])); fs.writeFileSync('action-observation.json', JSON.stringify(value)); console.log('DEPLOYMENT_ACTION_OBSERVATION=' + JSON.stringify(value));

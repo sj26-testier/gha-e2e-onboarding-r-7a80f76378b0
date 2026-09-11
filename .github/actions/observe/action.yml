@@ -1,0 +1,5 @@
+name: Observe protected ref environment
+description: Harmless local process observation
+runs:
+  using: node20
+  main: index.js
